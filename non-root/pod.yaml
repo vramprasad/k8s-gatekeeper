@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: node-js-env-pod
+spec:
+  containers:
+  - name: node-js-env-container
+    image: node-js-env:v1
+    imagePullPolicy: Never # Always look for local images
+    

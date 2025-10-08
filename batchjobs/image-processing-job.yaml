@@ -1,0 +1,58 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: image-processing-job
+  labels:
+    app: image-processor
+spec:
+  # Number of successful completions required
+  completions: 1
+  # Number of pods that can run in parallel
+  parallelism: 1
+  # Time limit for the job (5 minutes)
+  activeDeadlineSeconds: 300
+  # Cleanup policy - delete the job after it completes
+  ttlSecondsAfterFinished: 100
+  template:
+    metadata:
+      labels:
+        app: image-processor
+    spec:
+      # Restart policy for jobs must be Never or OnFailure
+      restartPolicy: Never
+      containers:
+      - name: image-processor
+        image: alpine:latest
+        command: ["/bin/sh"]
+        args:
+        - -c
+        - |
+          echo "Starting batch image processing job..."
+          echo "Simulating image processing tasks:"
+          
+          # Simulate processing 5 images
+          for i in $(seq 1 5); do
+            echo "Processing image_$i.jpg..."
+            # Simulate processing time
+            sleep 2
+            echo "✓ Resized image_$i.jpg to 800x600"
+            echo "✓ Applied filters to image_$i.jpg"
+            echo "✓ Saved processed image_$i.jpg"
+          done
+          
+          echo "Batch processing completed successfully!"
+          echo "Processed 5 images total"
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "100m"
+          limits:
+            memory: "128Mi"
+            cpu: "200m"
+        env:
+        - name: BATCH_SIZE
+          value: "5"
+        - name: OUTPUT_FORMAT
+          value: "jpg"
+      # Don't restart the pod if it fails
+      backoffLimit: 3

@@ -1,0 +1,15 @@
+{
+  "name": "node-js-env",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Ramprasad",
+  "license": "ISC",
+  "description": "A simple Node.js application to read and print an environment variable",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}

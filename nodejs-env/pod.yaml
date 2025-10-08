@@ -1,0 +1,40 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nodejs-env-pod
+spec:
+  containers:
+  - name: nodejs-env-container
+    image: node-js-env:v1.2
+    imagePullPolicy: Never # Always look for local images
+    env:
+    - name: ENV_API_KEY # The environment variable name used inside the container
+      valueFrom:
+        secretKeyRef:
+          name: env-api-secret # The name of the secret from kubernetes
+          key: envapikey # The key defined inside kubernetes secret
+    volumeMounts:
+    - name: api-secret-volume
+      mountPath: /etc/secrets
+      readOnly: true
+    #livenessProbe:
+    #  httpGet:
+    #    path: /health/live
+    #    port: 3000
+    #    scheme: HTTP
+    #  initialDelaySeconds: 10
+    #  periodSeconds: 10
+    #  timeoutSeconds: 5
+    #  failureThreshold: 3
+    #  successThreshold: 1
+    resources:
+      requests:
+        memory: "128Mi"
+        cpu: "50m"
+      limits:
+        memory: "512Mi"
+        cpu: "100m"
+  volumes:
+    - name: api-secret-volume
+      secret:
+        secretName: vol-api-secret
