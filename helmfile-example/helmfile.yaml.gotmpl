@@ -1,0 +1,77 @@
+environments:
+  dev:
+    values:
+      - environment: dev
+        namespace: client-api-dev
+        replicaCount: 1
+        imageTag: v1.1
+  
+  staging:
+    values:
+      - environment: staging
+        namespace: client-api-staging
+        replicaCount: 2
+        imageTag: staging
+  
+  prod:
+    values:
+      - environment: prod
+        namespace: client-api-prod
+        replicaCount: 3
+        imageTag: stable
+
+---
+
+releases:
+  - name: client-api
+    namespace: {{ .Values.namespace }}
+    createNamespace: true
+    chart: ./charts/client-api
+    values:
+      - image:
+          repository: docker.io/vramprasad/client-api
+          tag: {{ .Values.imageTag }}
+          pullPolicy: IfNotPresent
+        
+        replicaCount: {{ .Values.replicaCount }}
+        
+        environment: {{ .Values.environment }}
+        
+        service:
+          type: ClusterIP
+          port: 8080
+        
+        resources:
+          limits:
+            cpu: 1000m
+            memory: 1Gi
+          requests:
+            cpu: 500m
+            memory: 512Mi
+        
+        javaOpts: "-Xmx768m -Xms512m -XX:+UseG1GC"
+        
+        livenessProbe:
+          httpGet:
+            path: /actuator/health/liveness
+            port: 8080
+          initialDelaySeconds: 60
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        
+        readinessProbe:
+          httpGet:
+            path: /actuator/health/readiness
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 3
+
+helmDefaults:
+  wait: true
+  timeout: 600
+  recreatePods: false
+  force: false
+  atomic: true

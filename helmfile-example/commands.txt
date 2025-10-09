@@ -1,0 +1,13 @@
+helmfile -e dev sync
+
+# Deploy to staging
+helmfile -e staging sync
+
+# Deploy to production
+helmfile -e prod sync
+
+
+# Stop a releases
+helmfile -e dev destroy
+
+kubectl get events --field-selector type!=Normal -n "ns-dev"
