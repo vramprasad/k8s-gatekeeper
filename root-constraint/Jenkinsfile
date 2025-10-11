@@ -20,6 +20,8 @@ pipeline {
                     cd root-constraint
                     kubectl get namespace | grep -q "gk-test" || kubectl create namespace gk-test
                     helmfile sync
+                    echo "Getting events in gk-test namespace"
+                    sleep 10
                     kubectl get events --namespace gk-test
                 '''
             }
