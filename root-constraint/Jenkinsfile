@@ -1,0 +1,22 @@
+pipeline {
+    agent any
+     environment {
+        KUBECONFIG = "${env.USERPROFILE}\\.kube\\config"
+        KUBECTL_CONTEXT = 'minikube'
+        MINIKUBE_HOME = "${env.USERPROFILE}"
+    }
+
+    stages {
+        stage('Check Helm') {
+            steps {
+                sh '''
+                    set +x
+                    helm version
+                    helmfile version
+                    minikube update-context
+                    minikube status
+                '''
+            }
+        }
+    }
+}
