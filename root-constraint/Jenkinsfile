@@ -18,7 +18,8 @@ pipeline {
                     pwd
                     ls -ltrh
                     cd root-constraint
-                    helmfile sync --namespace gk-test --create-namespace
+                    kubectl get namespace | grep -q "gk-test" || kubectl create namespace gk-test
+                    helmfile sync
                     kubectl get events --namespace gk-test
                 '''
             }
