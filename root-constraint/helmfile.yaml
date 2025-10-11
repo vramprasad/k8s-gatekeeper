@@ -3,9 +3,9 @@ helmfiles: []
 repositories: []
 
 releases:
-  - name: bad-pod
+  - name: good-pod
     namespace: gk-test
-    chart: ./charts/bad-pod
+    chart: ./charts/good-pod
     version: 0.1.0
     installed: true
     wait: false

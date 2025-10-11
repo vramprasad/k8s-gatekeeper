@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: {{ .Values.pod.name }}
+  namespace: {{ .Values.pod.namespace }}
+  labels:
+    app: {{ .Values.pod.name }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    release: {{ .Release.Name }}
+spec:
+  containers:
+  - name: busybox-nonroot
+    image: {{ .Values.pod.image.repository }}:{{ .Values.pod.image.tag }}
+    imagePullPolicy: {{ .Values.pod.image.pullPolicy }}
+    command:
+{{ toYaml .Values.pod.command | indent 6 }}
+    {{- if .Values.pod.securityContext }}
+    securityContext:
+{{ toYaml .Values.pod.securityContext | indent 6 }}
+    {{- end }}
+    {{- if .Values.pod.resources }}
+    resources:
+{{ toYaml .Values.pod.resources | indent 6 }}
+    {{- end }}
+  restartPolicy: Always

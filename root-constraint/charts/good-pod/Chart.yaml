@@ -1,0 +1,6 @@
+apiVersion: v2
+name: good-pod
+description: A Helm chart for deploying a good pod without security context
+type: application
+version: 0.1.0
+appVersion: "1.0"

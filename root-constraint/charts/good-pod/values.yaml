@@ -1,0 +1,16 @@
+pod:
+  name: good-pod-container-level
+  namespace: gk-test
+  image:
+    repository: busybox
+    tag: latest
+    pullPolicy: IfNotPresent
+  command:
+    - "sh"
+    - "-c"
+    - "echo 'Running as non root user'; id; sleep 3600"
+  resources: {}
+  # Uncomment below to make it a GOOD pod
+  containerSecurityContext:
+    runAsNonRoot: true
+    runAsUser: 1000
