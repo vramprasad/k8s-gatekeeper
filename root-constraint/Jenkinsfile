@@ -17,6 +17,9 @@ pipeline {
                     minikube status
                     pwd
                     ls -ltrh
+                    cd root-constraint
+                    helmfile sync
+                    kubectl get events --namespace gk-test
                 '''
             }
         }
