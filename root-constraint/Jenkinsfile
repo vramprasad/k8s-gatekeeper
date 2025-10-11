@@ -3,7 +3,7 @@ pipeline {
      environment {
         KUBECONFIG = "${env.USERPROFILE}\\.kube\\config"
         KUBECTL_CONTEXT = 'minikube'
-        MINIKUBE_HOME = "${env.USERPROFILE}"
+        MINIKUBE_HOME = "C:\\Users\\prasad"
     }
 
     stages {
