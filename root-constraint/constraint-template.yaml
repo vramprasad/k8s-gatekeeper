@@ -1,0 +1,57 @@
+apiVersion: templates.gatekeeper.sh/v1
+kind: ConstraintTemplate
+metadata:
+  name: k8spspdenyroot
+  annotations:
+    description: >-
+      Requires that containers must not run as root user.
+      Corresponds to the `runAsNonRoot` field in a PodSecurityPolicy.
+spec:
+  crd:
+    spec:
+      names:
+        kind: K8sPSPDenyRoot
+      validation:
+        openAPIV3Schema:
+          type: object
+          description: >-
+            Requires that containers must not run as root user.
+  targets:
+    - target: admission.k8s.gatekeeper.sh
+      rego: |
+        package k8spspdenyroot
+
+        violation[{"msg": msg}] {
+          container := input.review.object.spec.containers[_]
+          not container.securityContext.runAsNonRoot
+          msg := sprintf("Container %v is not configured to run as non-root user", [container.name])
+        }
+
+        violation[{"msg": msg}] {
+          container := input.review.object.spec.containers[_]
+          container.securityContext.runAsUser == 0
+          msg := sprintf("Container %v is explicitly configured to run as root (UID 0)", [container.name])
+        }
+
+        violation[{"msg": msg}] {
+          container := input.review.object.spec.initContainers[_]
+          not container.securityContext.runAsNonRoot
+          msg := sprintf("InitContainer %v is not configured to run as non-root user", [container.name])
+        }
+
+        violation[{"msg": msg}] {
+          container := input.review.object.spec.initContainers[_]
+          container.securityContext.runAsUser == 0
+          msg := sprintf("InitContainer %v is explicitly configured to run as root (UID 0)", [container.name])
+        }
+
+        violation[{"msg": msg}] {
+          not input.review.object.spec.securityContext.runAsNonRoot
+          not has_container_security_context
+          msg := "Pod does not specify runAsNonRoot at pod or container level"
+        }
+
+        has_container_security_context {
+          container := input.review.object.spec.containers[_]
+          container.securityContext.runAsNonRoot
+        }

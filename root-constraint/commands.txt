@@ -1,0 +1,8 @@
+kubectl apply -f constraint-template.yaml
+kubectl apply -f constraint.yaml
+ 
+kubectl delete <constraint-kind> <constraint-name>
+
+kubectl get constrainttemplates
+
+kubectl get constraints

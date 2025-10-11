@@ -1,0 +1,16 @@
+pod:
+  name: bad-pod-container-level
+  namespace: gk-test
+  image:
+    repository: busybox
+    tag: latest
+    pullPolicy: IfNotPresent
+  command:
+    - "sh"
+    - "-c"
+    - "echo 'Running as root user'; id; sleep 3600"
+  resources: {}
+  # Uncomment below to make it a GOOD pod
+  # securityContext:
+  #   runAsNonRoot: true
+  #   runAsUser: 1000

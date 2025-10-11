@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: good-pod-container-level
+  namespace: gk-test
+spec:
+  containers:
+  - name: busybox-nonroot
+    image: busybox:latest
+    command: ["sh", "-c", "echo 'Running as non-root user'; id; sleep 3600"]
+    securityContext:
+      runAsUser: 1000  # Run as non-root user (UID 1000)
+      runAsGroup: 1000
+      allowPrivilegeEscalation: false
+      runAsNonRoot: true  # Enforce non-root execution

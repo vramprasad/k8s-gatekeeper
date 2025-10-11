@@ -1,0 +1,21 @@
+apiVersion: constraints.gatekeeper.sh/v1beta1
+kind: K8sPSPDenyRoot
+metadata:
+  name: deny-root-user
+spec:
+  match:
+    kinds:
+      - apiGroups: [""]
+        kinds: ["Pod"]
+    namespaces:
+      - "default"
+      - "production"
+      - "staging"
+      - "gk-test"
+    # Optionally exclude system namespaces
+    excludedNamespaces:
+      - "kube-system"
+      - "kube-public"
+      - "kube-node-lease"
+      - "gatekeeper-system"
+  parameters: {}

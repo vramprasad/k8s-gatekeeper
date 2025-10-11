@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: bad-pod-container-level
+  namespace: gk-test
+spec:
+  containers:
+  - name: busybox-root
+    image: busybox:latest
+    command: ["sh", "-c", "echo 'Running as root user'; id; sleep 3600"]
