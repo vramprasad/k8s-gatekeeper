@@ -9,12 +9,13 @@ pipeline {
     stages {
         stage('Check Helm') {
             steps {
-                def logFile = "${WORKSPACE}/helmfile-deploy.log"
-                sh '''
-                    set +x
-                    helm version
-                    helmfile version
-                    minikube update-context
+                script {
+                    def logFile = "${WORKSPACE}/helmfile-deploy.log"
+                    sh '''
+                        set +x
+                        helm version
+                        helmfile version
+                        minikube update-context
                     minikube status
                     pwd
                     ls -ltrh
