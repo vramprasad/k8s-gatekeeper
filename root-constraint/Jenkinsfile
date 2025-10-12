@@ -19,7 +19,13 @@ pipeline {
                     ls -ltrh
                     cd root-constraint
                     kubectl get namespace | grep -q "gk-test" || kubectl create namespace gk-test
-                    helmfile sync
+                    helmfile sync --skip-deps --wait || DEPLOYMENT_FAILED=true
+                    if [ "$DEPLOYMENT_FAILED" = true ]; then
+                        echo "Helm deployment failed"
+                        echo "Getting events in gk-test namespace"
+                        sleep 5
+                        kubectl get events --namespace gk-test
+                    fi
                     echo "Getting events in gk-test namespace"
                     sleep 10
                     kubectl get events --namespace gk-test
