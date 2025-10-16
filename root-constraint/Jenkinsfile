@@ -16,6 +16,10 @@ pipeline {
                         helmfile version
                         minikube update-context
                         minikube status
+                        pwd
+                        ls -ltrh
+                        cd root-constraint
+                        helmfile sync
                     '''
                 }
             }
