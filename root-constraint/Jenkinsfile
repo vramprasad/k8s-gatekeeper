@@ -16,8 +16,7 @@ pipeline {
                         helmfile version
                         minikube update-context
                         minikube status
-                        cd root-constraint
-                        helmfile sync --skip-deps --wait
+                        helmfile sync --skip-deps 
                         echo "Getting events in gk-test namespace"
                         kubectl get events --namespace gk-test
                     '''
