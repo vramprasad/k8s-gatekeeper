@@ -10,7 +10,6 @@ pipeline {
         stage('Check Helm') {
             steps {
                 script {
-                    def logFile = "${WORKSPACE}/helmfile-deploy.log"
                     sh '''
                         set +x
                         helm version
@@ -21,14 +20,7 @@ pipeline {
                         ls -ltrh
                         cd root-constraint
                         helmfile sync --skip-deps --wait 2>&1 | tee ${logFile} || DEPLOYMENT_FAILED=true
-                        if [ "$DEPLOYMENT_FAILED" = true ]; then
-                            echo "Helm deployment failed"
-                            echo "Getting events in gk-test namespace"
-                            sleep 5
-                            kubectl get events --namespace gk-test
-                        fi
                         echo "Getting events in gk-test namespace"
-                        sleep 10
                         kubectl get events --namespace gk-test
                     '''
                 }
