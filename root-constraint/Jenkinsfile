@@ -16,10 +16,8 @@ pipeline {
                         helmfile version
                         minikube update-context
                         minikube status
-                        pwd
-                        ls -ltrh
                         cd root-constraint
-                        helmfile sync --skip-deps --wait 2>&1 | tee ${logFile} || DEPLOYMENT_FAILED=true
+                        helmfile sync --skip-deps --wait
                         echo "Getting events in gk-test namespace"
                         kubectl get events --namespace gk-test
                     '''
