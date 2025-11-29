@@ -3,7 +3,7 @@ helmfiles: []
 repositories: []
 
 releases:
-  - name: good-pod
+  - name: good-pod-release
     namespace: gk-test
     chart: ./charts/good-pod
     version: 0.1.0
