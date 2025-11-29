@@ -21,7 +21,8 @@ pipeline {
                         cd root-constraint
                         helmfile sync
                         sleep 10
-                        kubectl get pods -n gk-test -l release=good-pod-release
+                        # kubectl get pods -n gk-test -l release=good-pod-release
+                        python test.py
                     '''
                 }
             }
