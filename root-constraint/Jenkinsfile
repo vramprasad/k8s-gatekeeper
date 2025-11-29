@@ -21,7 +21,7 @@ pipeline {
                         cd root-constraint
                         helmfile sync
                         sleep 10
-                        kubectl get pods -n gk-test -l app.kubernetes.io/instance=good-pod-release
+                        kubectl get pods -n gk-test -l release=good-pod-release
                     '''
                 }
             }
