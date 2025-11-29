@@ -1,0 +1,15 @@
+helmfiles: []
+
+repositories: []
+
+releases:
+  - name: bad-pod-release
+    namespace: gk-test
+    chart: ./charts/bad-pod
+    version: 0.1.0
+    installed: true
+    wait: false
+    timeout: 300
+    createNamespace: true
+    values:
+      - values.yaml

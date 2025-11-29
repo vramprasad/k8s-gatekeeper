@@ -19,8 +19,10 @@ pipeline {
                         pwd
                         ls -ltrh
                         cd root-constraint
-                        helmfile sync
+                        helmfile -f helmfile_good.yaml sync
+                        echo "Waiting for 10 seconds before validating pod"
                         sleep 10
+                        echo "Calling python script to validate pod"
                         python pods.py gk-test good-pod-release
                     '''
                 }
